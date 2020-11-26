@@ -2,52 +2,63 @@
 'use strict';
 
 const togglePopUp = () => {
-    const popup = document.querySelector('.popup'),
-        popupBtn = document.querySelectorAll('.popup-btn'),
-        popupClose = document.querySelector('.popup-close'),
+    const popupClose = document.querySelector('.popup-close'),
         popupContent = document.querySelector('.popup-content'),
-        popupData = {
-            count: -445,
-            speed: 15,
-            startPos: -445,
-            endPos: 0
+        popup = document.querySelector('.popup'),
+        contacts = document.querySelector('.contacts'),
+        callBtn = document.querySelector('.call-btn'),
+        discountBtn = document.querySelector('.discount-btn'),
+        checkBtn = document.querySelector('.check-btn'),
+        consultationBtn = document.querySelector('.consultation-btn'),
+        popupCall = document.querySelector('.popup-call'),
+        popupDiscount = document.querySelector('.popup-discount'),
+        popupCheck = document.querySelector('.popup-check'),
+        popupConsultation = document.querySelector('.popup-consultation');
+
+    try {
+
+        const showElem = e => {
+            e.style.display = 'block';
+            e.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
         };
-
-    const showPopup = () => {
-
-        if (popupData.startPos > popupData.endPos) {
-            popupData.count -= popupData.speed;
-        } else {
-            popupData.count += popupData.speed;
-        }
-
-        popupContent.style.transform = `translateY(${popupData.count}px)`;
-
-        if (popupData.startPos > popupData.endPos ?
-            popupData.count > popupData.endPos :
-            popupData.count < popupData.endPos) {
-            requestAnimationFrame(showPopup);
-        }
-    };
-
-    popupBtn.forEach(elem => {
-
-        elem.addEventListener('click', () => {
-            popup.style.display = 'block';
-            if (window.innerWidth > 768) {
-                popupData.count = popupData.startPos;
-                document.body.style.overflowY = 'hidden';
-                requestAnimationFrame(showPopup);
+        const hideElem = e => {
+            if (!e) {
+                return;
+            }
+            e.style.display = 'none';
+        };
+        // Открытие разных Popup
+        document.body.addEventListener('click', e => {
+            const target = e.target;
+            if (target.closest(callBtn)) { 
+                showElem(popupCall);
+            }
+            if (target.closest(discountBtn)) { 
+                showElem(popupDiscount);
+            }
+            if (target.closest(checkBtn)) {
+                showElem(popupCheck);
+            }
+            if (target.closest(consultationBtn)) { 
+                showElem(popupConsultation);
             }
         });
 
-    });
-
-    popupClose.addEventListener('click', () => {
-        document.body.style.overflowY = '';
-        popup.style.display = 'none';
-        document.getElementById("form3").reset();
-    });
+        // Закрытие Popup
+        document.body.addEventListener('click', ev => {
+            ev.preventDefault();
+            if (ev.target.closest(popupClose) ||
+                !ev.target.closest(popupContent) &&
+                !ev.target.closest(contacts)) {
+                //нажатие на любой элемент страницы, кроме модального окна и кнопки вызова popup
+                hideElem(ev.target.closest(popup));
+            }
+        });
+    } catch (e) {
+        console.warn(e);
+    } 
 };
 
 export default togglePopUp;
