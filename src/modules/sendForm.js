@@ -1,95 +1,101 @@
 'use strict';
 
-import sendData from './sendData';
+const sendForm = () => {
+    const errorMessage = "Что-то пошло нет...",
+        loadMessage = "Загрузка...",
+        successMessage = "Спасибо!Мы с вами свяжемся! ";
 
-const sendForm = () =>{
-    const errorMessage = 'Что то пошло не так',
-        successMessage = 'Ваша заявка получена',
-        statusMessage = document.createElement('div'),
-        imgLoader = document.createElement('img'),
-        url = './server_json.php';
-    let body = {};        
-    let finishSend = {};       
+    const statusMessage = document.createElement("div");
+    statusMessage.style.cssText = "font-size: 2rem; color: white";
 
-    statusMessage.style.cssText = 'font-size: 2rem;';
+    const postData = body => fetch('./server.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
+        credentials: 'include'
 
-     // очищаем поля
-     const resetValue = target =>{
-         setTimeout(()=>{
-            target.querySelector('.phone-user') ?
-            target.querySelector('.phone-user').value = '' : null;
+    });
 
-            target.querySelector('.user-name') ?
-            target.querySelector('.user-name').value = '' : null;
+    document.addEventListener('submit', e => {
 
-            target.querySelector('.question-boss') ?
-            target.querySelector('.question-boss').value = '' : null;
+        e.preventDefault();
+        const target = e.target;
 
-            statusMessage.textContent = '';
-            finishSend = {};
-         },5000);
-
-    };
-    // отображаем loader
-    const showLoader =  () => {
-        imgLoader.style.display = 'inline-block';
-        imgLoader.src = "./img/1.gif";
-    };
-
-    document.addEventListener('submit',(event) => {
-        event.preventDefault();
-        const target = event.target; 
-
-        if( target.querySelector('.phone-user') &&
-        target.querySelector('.phone-user').matches('.error') ) {return;}
-
-        if( target.querySelector('.user-name') &&
-        target.querySelector('.user-name').matches('.error') ) {return;}
-
-        if (target.querySelector('.question-boss') &&
-        target.querySelector('.question-boss').matches('.error')) {return;}
-       
-       
         target.appendChild(statusMessage);
-        statusMessage.textContent ='';
-        statusMessage.appendChild(imgLoader).style.display = 'none';
-        const formData = new FormData(target);
-                formData.forEach((val, key) => {
-                    body[key] = val;
-                    sendData[key] = val;
-                });
-        if (target.parentNode.parentNode.parentNode.matches('.popup-discount')) {
-            finishSend = sendData;
-        } else if (target.parentNode.parentNode.parentNode.matches('.popup-consultation')) {
-            body.message = sendData.questionDirector;
-            finishSend = body;
-        } else {
-            finishSend = body;
-        }
+        statusMessage.textContent = loadMessage;
 
-        showLoader();
-        const postData = (body) => {
-            return fetch(url,{
-                method: 'POST',
-                headers: {'Content-Type': 'aplication/json'},
-                body : JSON.stringify(body)
+        const formData = new FormData(target);
+        const body = {};
+        formData.forEach((val, key) => {
+            body[key] = val;
+        });
+
+        const clearInputsForms = target => {
+            const targetFormInputs = target.querySelectorAll('input');
+            targetFormInputs.forEach(item => {
+                item.value = '';
             });
         };
 
-        // postData(body)              
-        postData(finishSend)              
-            .then( response => {
-                if (response.ok) {
-                    imgLoader.style.display = 'none';
-                    statusMessage.textContent = successMessage;
-                } else {
-                    throw new Error(response.textContent);
+        // eslint-disable-next-line no-use-before-define
+        postData(body)
+
+            .then(response => {
+                if (response.status !== 200) {
+                    throw new Error('status network not 200!');
                 }
-            }).then( 
-                resetValue(target)            
-            )
-            .catch( error => statusMessage.textContent = errorMessage);
+                statusMessage.textContent = successMessage;
+                // eslint-disable-next-line no-use-before-define
+                clearInputsForms(target);
+                const remStatus = () => statusMessage.textContent = '';
+                setTimeout(() => {
+                    remStatus();
+                }, 2500);
+            })
+            .catch(error => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
+
     });
+
+    // Validator
+    const isValidate = () => {
+
+        document.addEventListener('input', event => {
+            const target = event.target;
+            if (target.matches('[name="user_name"]')) {
+                target.value = target.value.replace(/[^а-яА-ЯёЁ\s]/, '');
+            }
+
+            if (target.matches('[name="user_email"]')) {
+                if (/^[\w-\\.]+@[\w-]+\.[a-z]{2,4}$/i.test(target.value)) {
+                    target.setCustomValidity('');
+                } else {
+                    target.setCustomValidity('Введите значение в формате myemail@mail.ru');
+                }
+            }
+
+            if (target.matches('[name="user_quest"]')) {
+                target.value = target.value.replace(/[^а-яА-ЯёЁ,.!?\s]/, '');
+            }
+
+            if (target.matches('[name="user_phone"]')) {
+                target.value = target.value.replace(/[^\\+?[0-9]/i, '');
+                if (/^\+?[78][0-9]{10}$/.test(target.value) ||
+                /^\+?[378][0-9]{11}$/.test(target.value)) {
+                    target.setCustomValidity('');
+                } else {
+                    target.setCustomValidity('Введите значение в формате +79273335544 или 89273335544');
+                }
+            }
+        });
+    };
+    isValidate();
+
+    document.body.addEventListener('input', isValidate);
 };
 
 export default sendForm;
