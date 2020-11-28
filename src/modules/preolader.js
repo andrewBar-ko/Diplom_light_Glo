@@ -12,4 +12,4 @@ const preolader = () => {
 
 };
 
-export default preolader;
+// export default preolader;
