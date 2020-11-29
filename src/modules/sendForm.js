@@ -156,9 +156,7 @@ const sendForm = () => {
 
     document.body.addEventListener('input', isValidate);
 
-    // const errorMessage = 'Что-то пошло не так...',
-	// 	loadMessage = 'Загрузка...',
-	// 	successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+ 
 
 	// const forms = document.querySelectorAll('form'),
 	// 	bodyHtml = document.querySelector('body'),
@@ -216,36 +214,6 @@ const sendForm = () => {
 	// 		status.remove();
 	// 	}, 5000);
 	// };
-
-	// const postData = body => fetch('./server.php', {
-	// 	method: 'POST',
-	// 	mode: 'cors',
-	// 	credentials: 'same-origin',
-	// 	headers: {
-	// 		'Content-Type': 'application/json'
-	// 	},
-	// 	body: JSON.stringify(body)
-	// });
-
-	// forms.forEach(form => {
-	// 	form.addEventListener('input', e => {
-	// 		const target = e.target;
-	// 		if (target.name === 'user_phone') {
-	// 			target.value = target.value.replace(/[^+\d]/g, '');
-	// 		}
-	// 		if (target.name === 'user_name') {
-	// 			target.value = target.value.replace(/[^а-я ]/gi, '');
-	// 		}
-	// 		btns.forEach(elem => {
-	// 			if (target.name === 'user_phone' && target.value.length < 10) {
-	// 				elem.setAttribute("disabled", "true");
-	// 				target.style.cssText = 'border: 2px solid red';
-	// 			} else {
-	// 				elem.removeAttribute('disabled');
-	// 				target.style.cssText = 'border: none';
-	// 			}
-	// 		});
-	// 	});
 
 	// 	form.addEventListener('submit', e => {
 	// 		e.preventDefault();
