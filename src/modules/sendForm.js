@@ -109,13 +109,20 @@ const sendForm = () => {
 				removeStatusMessage();
                 const remStatus = () => statusMessage.loaderHtml = '';
                 setTimeout(() => {
-                    remStatus();
-                }, 2500);
+					remStatus();
+					loaderHtml.remove();
+				}, 2500);
+				
+				
             })
             .catch(error => {
 				removeStatusMessage();
+				clearInputsForms(target);
                 statusMessage.textContent = errorMessage;
-                console.error(error);
+				console.error(error);
+				setTimeout(() => {
+					loaderHtml.remove();
+				}, 500);
             });
 
     });
