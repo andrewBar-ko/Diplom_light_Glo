@@ -29,7 +29,8 @@ const togglePopUp = () => {
                 };
                 setOpacity();
 		} else if (target.closest('.popup-close') || target.classList.contains('popup-call')) {
-			popupCall.style.display = 'none';
+            popupCall.style.display = 'none';
+            document.querySelector('.popup input').valuу = '';
 		}
 
 		if (target.classList.contains('discount-btn')) {
