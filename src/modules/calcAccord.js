@@ -1,6 +1,7 @@
 'use strict';
 
 import togglePopUp from './togglePopUp';
+
 let dataCalc = {
     bottom: "no",
     onoffswitch: 1
@@ -24,7 +25,7 @@ const calcAccord = () => {
 
     accordionCalc.addEventListener("click", e => {
         const target = e.target;
-
+        
         const hideBlock = () => {
             titleText.style.display = "none";
             for (let index = 0; index < selectBox.length; index++) {
@@ -43,6 +44,7 @@ const calcAccord = () => {
 
         if (!((target.closest(".onoffswitch"))||
         (target.closest(".construct-btn")) ||
+        (target.closest(moveAccord())) ||
         (target.closest("select")) )){
             return;
         }
@@ -112,21 +114,21 @@ const calcAccord = () => {
                 const collapseFourInput = document.getElementById("collapseFour").querySelector("input");
 
                 dataCalc["distance"] = collapseFourInput.value;
+                
                 return;
 
             }
+            
             e.preventDefault();
             const targetPanel = target.closest(".panel-collapse");
             targetPanel.classList.remove("in");
 
             const targetNextPanel = targetPanel.closest(".panel").nextElementSibling;
             targetNextPanel.querySelector(".panel-collapse").classList.add("in");
-        };
-        
-
-        
+        }
+    
+                
         calcResult.value = calcRes;
-        
 
     });
 
@@ -149,9 +151,10 @@ const calcAccord = () => {
             }
 
         });
+        
 
         res = res + res * countMeter * 0.2 + res * countThingTwo * 0.3 + res * countThingThree * 0.5;
-
+        
         return res;
     };
 
@@ -168,6 +171,25 @@ const calcAccord = () => {
         }
     };
     addData();
+
+    const moveAccord = () => {
+        // const accordion = document.getElementById('accordion');
+            
+        accordionCalc.addEventListener('click', e => {
+    
+            e.preventDefault();
+    
+            let target = e.target;
+            target = target.closest('.panel-default');
+    
+            const openedElem = accordionCalc.querySelector('.collapse.in');
+            openedElem.classList.remove('in');
+            openedElem.classList.add('collapse');
+            target.children[1].classList.add('in');
+        });
+    
+    };
+    
   
     
 
