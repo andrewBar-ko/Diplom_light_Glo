@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode=production",
-    "dev": "webpack-dev-server --open --mode=development"
+    "dev": "webpack-dev-server --open --mode=development",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -31,10 +32,15 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "apply-url": "^5.0.3",
+    "cross-browser-polyfill": "^1.0.5",
+    "dom-node-polyfills": "^1.0.0",
     "element-closest": "^3.0.2",
     "es6-promise": "^4.2.8",
     "fetch-polyfill": "^0.8.2",
     "formdata-polyfill": "^3.0.20",
-    "nodelist-foreach-polyfill": "^1.2.0"
+    "ie11-scroll-into-view": "^1.0.2",
+    "nodelist-foreach-polyfill": "^1.2.0",
+    "promise-polyfill": "^8.2.0"
   }
 }
