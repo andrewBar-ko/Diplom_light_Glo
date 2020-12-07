@@ -6,6 +6,11 @@ elementClosest(window);
 import 'formdata-polyfill';
 import 'es6-promise';
 import 'fetch-polyfill';
+// import 'cross-browser-polyfill';
+// // import 'ie11-scroll-into-view';
+// import 'dom-node-polyfills';
+// import 'promise-polyfill';
+// import 'apply-url';
 
 import addMore from './modules/addMore';
 import togglePopUp from './modules/togglePopUp';
